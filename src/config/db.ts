@@ -1,6 +1,6 @@
-const {Sequelize} = require('sequelize');
+import {Sequelize} from 'sequelize';
 
-const connectToDB = new  Sequelize("cate-nik" , "root", "mohammadmehdi79@",{
+const sequelize = new  Sequelize("cafeNike" , "root", "mohammadmehdi79@",{
     host:'localhost',
     port:3306,
     dialect:'mysql',
@@ -14,4 +14,4 @@ const connectToDB = new  Sequelize("cate-nik" , "root", "mohammadmehdi79@",{
 })
 
 
-module.exports = connectToDB;
+module.exports = sequelize;
