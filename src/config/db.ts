@@ -13,5 +13,4 @@ const sequelize = new  Sequelize("cafeNike" , "root", "mohammadmehdi79@",{
     }
 })
 
-
-module.exports = sequelize;
+ export default sequelize;

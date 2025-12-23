@@ -1,9 +1,11 @@
-const fastify  = require('fastify')({logger:true});
-const sequelize = require('@/config/db');
+import fastify  from "fastify";
+import sequelize from "./config/db.js";
 
 
+const fast = fastify({logger:true});
 
-fastify.get('/', async(req , reply)=>(
+
+fast.get('/', async(req , reply)=>(
     reply.send('hello world')
 ))
 
@@ -13,7 +15,7 @@ const start = async ()=>{
         console.log("Database connected ✅");
         await sequelize.sync({alter:true});
         console.log("✅ Models synced");
-        await fastify.listen({port:3000});
+        await fast.listen({port:3000});
         console.log("Server running on port 3000")
     }catch(error:any){
         console.error(error);

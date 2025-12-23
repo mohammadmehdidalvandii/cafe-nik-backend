@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "./src",
@@ -10,12 +10,13 @@
     },
     "strict": true,
     "noImplicitAny": true,
+    "moduleDetection": "force",
     "strictNullChecks": true,
+    "allowSyntheticDefaultImports": true,
     "strictFunctionTypes": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "incremental": true,
     "sourceMap": true,
