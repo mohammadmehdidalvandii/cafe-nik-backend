@@ -1,0 +1,105 @@
+import {User} from '@/models/index.js';
+import { Op } from 'sequelize';
+import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword } from '@/utils/auth.js';
+import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps } from '@/types/auth.js';
+
+// Register by Password
+export const registerWithPassword = async ({username , phone , email , password}:RegisterWithPasswordProps)=>{
+    const exitsUser = await User.findOne({
+        where:{
+            [Op.or]:[
+                {phone},
+                {email}
+            ]
+        }
+    });
+    if(exitsUser){
+        throw new Error('کاربر از قبل وجود دارد')
+    };
+
+
+  const isFirstUser = (await User.count()) === 0;
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+
+    const hashPassword = await hashedPassword(password);
+
+    const register = await User.create({
+        username,
+        phone,
+        roles:roles,
+        password:hashPassword,
+        login_method:'password',
+        is_guest:false
+    });
+
+    return register
+};
+
+// Register by OTP
+export const registerWithOTP = async ({phone}:RegisterWithOTPProps)=>{
+    const exitsUser = await User.findOne({where:{phone}});
+    if(exitsUser){
+        throw new Error('کاربر از قبل وجود دارد')
+    };
+
+
+  const isFirstUser = (await User.count()) === 0;
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+
+    const register = await User.create({
+        phone,
+        roles:roles,
+        login_method:'OTP',
+        is_guest:false
+    });
+
+    return register
+};
+
+// Register Guest
+export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
+       const exitsUser = await User.findOne({where:{phone}});
+    if(exitsUser){
+        throw new Error('کاربر از قبل وجود دارد')
+    }; 
+
+
+  const isFirstUser = (await User.count()) === 0;
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+
+    const register = await User.create({
+        username,
+        phone,
+        roles:roles,
+        login_method:'guest',
+        is_guest:true,
+    });
+    return register
+};
+
+export const loginWithPassword = async({email , password}:LoginWithPassword)=>{
+    const account = await User.findOne({where:{email}});
+    if(!account){
+        throw new Error('کاربر وجود ندارد')
+    };
+    if(!account.password){
+        throw new Error('این کاربر با رمز عبور ثبت نام نکرده است ')
+    }
+    const isValid = await comparePassword(password , account.password);
+    if(!isValid){
+        throw new Error('شماره تلفن یا رمز عبور اشتباه است !');
+    };
+
+    const accessToken  = generateAccessToken({
+        id:account.id,
+        username:account.username,
+        phone:account.phone,
+        roles:account.roles,
+        email:account.email,
+    });
+    const refreshToken = generateRefreshToken({
+        id:account.id
+    });
+
+    return {accessToken , refreshToken}
+}
