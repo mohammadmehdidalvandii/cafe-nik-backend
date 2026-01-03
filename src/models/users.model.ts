@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { UserAttributes } from "@/types/user.js";
+import { DataTypes, Model} from "sequelize";
 
-export  const User = sequelize.define("User",{
+type userInstance = Model<UserAttributes> & UserAttributes;
+
+export  const User = sequelize.define<userInstance>("User",{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
