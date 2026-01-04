@@ -1,11 +1,11 @@
 import {hash , compare} from 'bcryptjs';
-import {sign , verify , JwtPayload} from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
-interface MyTokenPayload extends JwtPayload{
+interface MyTokenPayload extends jwt.JwtPayload{
     data:{id:string , [key:string]:unknown}
 };
 
-const securityCode = process.env.SRC_CODE;
+const securityCode = process.env.SRC_CODE || "AKLSNDKLANSDKLNASKDNKASNKLDNLASNDKLASNKLDNKASLNDKLSANKDLASKNDKLASNKLAMCMAKSLMKL";
 
 if(!securityCode){
     throw new Error('Security code is not found')
@@ -13,7 +13,7 @@ if(!securityCode){
 
 const generateAccessToken = (data:Record<string,any>)=>{
     try{
-        const token = sign({data}, securityCode ,{expiresIn:'15m'})
+        const token = jwt.sign({data}, securityCode ,{expiresIn:'15m'})
         return  token
     }catch(error){
         console.log("Invalid generate AccessToken =>", error)
@@ -22,7 +22,7 @@ const generateAccessToken = (data:Record<string,any>)=>{
 
 const generateRefreshToken = (data:Record<string ,any>)=>{
     try{
-       const token = sign({data},securityCode,{expiresIn:'7d'});
+       const token = jwt.sign({data},securityCode,{expiresIn:'7d'});
         return token
     }catch(error){  
         console.log("Invalid generate RefreshToken =>", error)
@@ -31,7 +31,7 @@ const generateRefreshToken = (data:Record<string ,any>)=>{
 
 const verifyToken = (token:string)=>{
     try{
-        const payload = verify(token , securityCode)as MyTokenPayload;
+        const payload = jwt.verify(token , securityCode)as MyTokenPayload;
         return payload
     }catch(error){  
         console.log("Invalid Verify Token", error)
