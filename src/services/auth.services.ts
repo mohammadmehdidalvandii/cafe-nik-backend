@@ -3,6 +3,7 @@ import { Otp } from '@/models/Otp.model.js';
 import { Op } from 'sequelize';
 import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword } from '@/utils/auth.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
+import { sendOTPSms } from './sms.services.js';
 
 // Register by Password
 export const registerWithPassword = async ({username , phone , email , password}:RegisterWithPasswordProps)=>{
@@ -20,7 +21,7 @@ export const registerWithPassword = async ({username , phone , email , password}
 
 
   const isFirstUser = (await User.count()) === 0;
-  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+  const roles = isFirstUser ? 'مشتری' : 'مدیریت';
 
     const hashPassword = await hashedPassword(password);
 
@@ -53,13 +54,14 @@ export const sendOTP = async ({phone}:RegisterWithOTPProps)=>{
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expires_at = new Date(Date.now()+ 2 * 60 * 1000); // 2 min
 
-    await Otp.create({
+     await Otp.create({
         phone,
         code,
         expires_at,
         used:false
     });
     // Send service message;
+    await sendOTPSms(phone , code)
 
     return {message:"کد یکبار مصرف ارسال شد"}
 };
