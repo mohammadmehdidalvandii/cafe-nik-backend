@@ -1,15 +1,15 @@
 import fastify  from "fastify";
 import sequelize from "./config/db.js";
 import cookie from '@fastify/cookie'
-
+import authRoutes from "./routes/auth.routes.js";
 
 const fast = fastify({logger:true});
 
 fast.register(cookie);
 
-fast.get('/', async(req , reply)=>(
-    reply.send('hello world')
-))
+// Routes 
+ fast.register(authRoutes ,{prefix:'/api/auth'})
+
 
 const start = async ()=>{
     try{
