@@ -9,6 +9,11 @@ export interface RegisterWithOTPProps{
     phone:string
 };
 
+export interface VerifyCodeOtpProps{
+    phone:string,
+    code:string
+}
+
 export interface RegisterWithGuest{
     username:string
     phone:string 

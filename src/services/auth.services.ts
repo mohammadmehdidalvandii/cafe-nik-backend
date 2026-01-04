@@ -1,7 +1,8 @@
 import {User} from '@/models/index.js';
+import { Otp } from '@/models/Otp.model.js';
 import { Op } from 'sequelize';
 import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword } from '@/utils/auth.js';
-import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps } from '@/types/auth.js';
+import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 
 // Register by Password
 export const registerWithPassword = async ({username , phone , email , password}:RegisterWithPasswordProps)=>{
@@ -37,24 +38,58 @@ export const registerWithPassword = async ({username , phone , email , password}
 
 // Register by OTP
 export const registerWithOTP = async ({phone}:RegisterWithOTPProps)=>{
-    const exitsUser = await User.findOne({where:{phone}});
-    if(exitsUser){
-        throw new Error('کاربر از قبل وجود دارد')
+    let user = await User.findOne({where:{phone}});
+    if(!user){
+        const role = (await User.count()) === 0 ? 'مشتری' : 'مدیریت';
+        user = await User.create({
+            phone,
+            roles:role,
+            login_method:'OTP',
+            is_guest:true
+        })
     };
 
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires_at = new Date(Date.now()+ 2 * 60 * 1000); // 2 min
 
-  const isFirstUser = (await User.count()) === 0;
-  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
-
-    const register = await User.create({
+    await Otp.create({
         phone,
-        roles:roles,
-        login_method:'OTP',
-        is_guest:false
+        code,
+        expires_at,
+        used:false
+    });
+    // Send service message;
+
+    return {message:"کد یکبار مصرف ارسال شد"}
+};
+
+// Verify Code
+
+export const verifyCode = async({phone , code}:VerifyCodeOtpProps)=>{
+    const otp = await Otp.findOne({
+        where:{phone , code , used:false , expires_at:{[Op.gt]: new Date()}},
+        order:[['created_at','DESC']]
     });
 
-    return register
-};
+    if(!otp)throw new Error('کد ورود شما نامعتبر یا منقضی شد ');
+
+    otp.used = true
+    await otp.save();
+    const user = await User.findOne({where:{phone}});
+
+        const accessToken  = generateAccessToken({
+        id:user?.id,
+        username:user?.username,
+        phone:user?.phone,
+        roles:user?.roles,
+        email:user?.email,
+    });
+    const refreshToken = generateRefreshToken({
+        id:user?.id
+    });
+    
+    return {user , accessToken , refreshToken}
+}
 
 // Register Guest
 export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{

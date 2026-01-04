@@ -1,7 +1,10 @@
-import {DataTypes} from 'sequelize';
+import {DataTypes, Model} from 'sequelize';
 import sequelize from '@/config/db.js';
+import { OtpAttributes } from '@/types/otp.js';
 
-export const Otp = sequelize.define('Otp',{
+type otpInstance = Model<OtpAttributes> & OtpAttributes
+
+export const Otp = sequelize.define<otpInstance>('Otp',{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
