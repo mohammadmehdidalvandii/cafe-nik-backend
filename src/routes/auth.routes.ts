@@ -5,4 +5,5 @@ export default async function authRoutes(fastify:fast){
     fastify.post('/register', registerPasswordController);
     fastify.post('/guest', registerGuessController);
     fastify.post('/sendCode', sendOtpController);
+    fastify.post('/verify-code', verifyOtpController);
 }

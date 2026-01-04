@@ -80,7 +80,7 @@ export const verifyOtpController = async (req:Req , reply:Reply)=>{
                 maxAge:60 * 60 * 24 * 7
             })
             
-        reply.code(401).send({
+        reply.code(201).send({
             message:'ورود شما موفقیت امیز بود',
             statusCode:401,
             data: {accessToken , user}
