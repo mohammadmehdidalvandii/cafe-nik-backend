@@ -1,5 +1,5 @@
 import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword  } from '@/services/auth.services.js';
-import { RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
+import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
 
@@ -89,5 +89,31 @@ export const verifyOtpController = async (req:Req , reply:Reply)=>{
         reply.code(401).send({
             message:error.message
         })
+    }
+};
+
+export const loginPasswordController = async (req:Req , reply:Reply)=>{
+    try{
+        const {email , password} = req.body as LoginWithPassword
+        const {accessToken , refreshToken} = await loginWithPassword({email , password});
+            if(!refreshToken){
+                    throw new Error('Refresh Token not generate')                   
+            }
+             reply.cookie('refreshToken',refreshToken,{
+                httpOnly:true,
+                secure:true,
+                sameSite:'strict',
+                path:'/',
+                maxAge:60 * 60 * 24 * 7
+             });
+
+             reply.code(200).send({
+                message:'ورود شما موفقیت آمیز بود',
+                statusCode:200,
+                data:{accessToken}
+             })
+
+    }catch(error:any){
+
     }
 }

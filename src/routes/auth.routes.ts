@@ -1,4 +1,4 @@
-import {registerPasswordController , registerGuessController , sendOtpController , verifyOtpController} from '@/controller/auth.controller.js'
+import {registerPasswordController , registerGuessController , sendOtpController , verifyOtpController ,loginPasswordController} from '@/controller/auth.controller.js'
 import { fast } from '@/types/fastify.js'
 
 export default async function authRoutes(fastify:fast){
@@ -6,4 +6,5 @@ export default async function authRoutes(fastify:fast){
     fastify.post('/guest', registerGuessController);
     fastify.post('/sendCode', sendOtpController);
     fastify.post('/verify-code', verifyOtpController);
+    fastify.post('/loginPassword', loginPasswordController);
 }
