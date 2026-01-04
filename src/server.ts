@@ -1,9 +1,11 @@
 import fastify  from "fastify";
 import sequelize from "./config/db.js";
+import cookie from '@fastify/cookie'
 
 
 const fast = fastify({logger:true});
 
+fast.register(cookie);
 
 fast.get('/', async(req , reply)=>(
     reply.send('hello world')

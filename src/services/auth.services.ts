@@ -37,7 +37,7 @@ export const registerWithPassword = async ({username , phone , email , password}
 };
 
 // Register by OTP
-export const registerWithOTP = async ({phone}:RegisterWithOTPProps)=>{
+export const sendOTP = async ({phone}:RegisterWithOTPProps)=>{
     let user = await User.findOne({where:{phone}});
     if(!user){
         const role = (await User.count()) === 0 ? 'مشتری' : 'مدیریت';
