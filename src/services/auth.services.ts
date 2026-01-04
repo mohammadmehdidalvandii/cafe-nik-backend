@@ -27,6 +27,7 @@ export const registerWithPassword = async ({username , phone , email , password}
     const register = await User.create({
         username,
         phone,
+        email,
         roles:roles,
         password:hashPassword,
         login_method:'password',
