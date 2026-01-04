@@ -114,6 +114,9 @@ export const loginPasswordController = async (req:Req , reply:Reply)=>{
              })
 
     }catch(error:any){
-
+        reply.code(401).send({
+            message:error.message,
+            statusCode:401
+        })
     }
 }
