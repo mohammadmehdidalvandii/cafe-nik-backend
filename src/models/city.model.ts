@@ -1,8 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { cityProps } from "@/types/city.js";
+import { DataTypes, Model } from "sequelize";
 
+type CityInstance = Model<cityProps> & cityProps
 
-export const City = sequelize.define('City',{
+export const City = sequelize.define<CityInstance>('City',{
     id:{
         type:DataTypes.UUID,
         primaryKey:true,
