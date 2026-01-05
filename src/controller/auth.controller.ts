@@ -170,4 +170,12 @@ export const profileController = async (req:Req ,reply:Reply)=>{
             statusCode:400
         })
     }
+};
+
+export const logoutController = async (req:Req , reply:Reply)=>{
+    reply.clearCookie('refreshToken');
+    reply.code(200).send({
+        message:'از حساب کاربری با موفقیت خارج شدید',
+        statusCode:200,
+    })
 }
