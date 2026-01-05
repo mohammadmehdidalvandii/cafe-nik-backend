@@ -1,4 +1,4 @@
-import {createCity , getAllCities , getCityById ,getCityByName} from '@/services/city.services.js';
+import {createCity , getAllCities , getCityById } from '@/services/city.services.js';
 import { Reply, Req } from '@/types/fastify.js';
 
 export const createCityController = async (req:Req , reply:Reply)=>{
