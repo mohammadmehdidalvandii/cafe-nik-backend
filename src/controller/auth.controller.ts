@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getAllUsers } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
