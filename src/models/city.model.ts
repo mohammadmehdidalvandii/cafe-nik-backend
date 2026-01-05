@@ -7,6 +7,7 @@ type CityInstance = Model<cityProps> & cityProps
 export const City = sequelize.define<CityInstance>('City',{
     id:{
         type:DataTypes.UUID,
+        defaultValue:DataTypes.UUIDV4,
         primaryKey:true,
     },
     name:{

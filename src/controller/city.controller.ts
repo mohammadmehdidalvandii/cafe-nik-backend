@@ -58,25 +58,3 @@ export const getCityByIdController = async (req:Req , reply:Reply)=>{
         })
     }
 };
-export const getCityByNameController = async (req:Req , reply:Reply)=>{
-    try{
-        const {name} = req.params as {name:string};
-        if(!name){
-            reply.code(400).send({
-                message:'Id is required',
-                statusCode:400
-            })
-        }
-        const city = await getCityById(name);
-        reply.code(200).send({
-            message:'Get city by Id',
-            statusCode:200,
-            data:city,
-        })
-    }catch(error:any){
-        reply.code(400).send({
-            message:error.message,
-            statusCode:400,
-        })
-    }
-};

@@ -20,10 +20,5 @@ export const getCityById = async (id:string)=>{
     return city;
 };
 
-export const getCityByName = async (name:string)=>{
-    const city = await City.findOne({where:{name}});
-    if(!city) throw new Error('شهر یافت نشد');
-    return city;
-};
 
 
