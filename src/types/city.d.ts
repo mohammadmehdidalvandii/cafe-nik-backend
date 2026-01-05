@@ -1,4 +1,4 @@
 export interface cityProps{
-    id:string,
+    id?:string,
     name:string
 }
