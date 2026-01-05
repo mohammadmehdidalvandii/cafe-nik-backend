@@ -15,7 +15,7 @@ const start = async ()=>{
     try{
         await sequelize.authenticate();
         console.log("Database connected ✅");
-        await sequelize.sync({alter:true});
+        await sequelize.sync();
         console.log("✅ Models synced");
         await fast.listen({port:3000});
         console.log("Server running on port 3000")

@@ -1,7 +1,7 @@
 import {User} from '@/models/index.js';
 import { Otp } from '@/models/Otp.model.js';
 import { Op } from 'sequelize';
-import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword } from '@/utils/auth.js';
+import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword, verifyToken } from '@/utils/auth.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { sendOTPSms } from './sms.services.js';
 
@@ -140,4 +140,15 @@ export const loginWithPassword = async({email , password}:LoginWithPassword)=>{
     });
 
     return {accessToken , refreshToken}
+};
+
+
+export const refreshToken = async (refreshToken:string)=>{
+    try{
+        const payload:any = verifyToken(refreshToken);
+        const newAccessToken = generateAccessToken({id:payload.id});
+        return newAccessToken
+    }catch(error:any){
+        throw new Error(`Invalid RefreshToken => ${error.message}`)
+    }
 }

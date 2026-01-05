@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword  } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getAllUsers } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
@@ -119,4 +119,31 @@ export const loginPasswordController = async (req:Req , reply:Reply)=>{
             statusCode:401
         })
     }
-}
+};
+
+export const refreshTokenController = async (req: Req, reply: Reply) => {
+  try {
+    const token = req.cookies.refreshToken;
+
+    if (!token) {
+      return reply.code(401).send({
+        message: 'Refresh token not found',
+        statusCode: 401,
+      });
+    }
+
+    const accessToken = await refreshToken(token);
+
+    return reply.code(200).send({
+      message: 'Access token refreshed successfully',
+      statusCode: 200,
+      data: { accessToken },
+    });
+
+  } catch (error: any) {
+    return reply.code(401).send({
+      message: error.message || 'Invalid refresh token',
+      statusCode: 401,
+    });
+  }
+};
