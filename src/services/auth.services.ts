@@ -152,3 +152,14 @@ export const refreshToken = async (refreshToken:string)=>{
         throw new Error(`Invalid RefreshToken => ${error.message}`)
     }
 }
+
+export const getProfile = async (id:string)=>{
+    const profile = await User.findOne({
+        where:{id},
+        attributes:{
+            exclude:['password']
+        }
+    });
+
+    return profile
+}

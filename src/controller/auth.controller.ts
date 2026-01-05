@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
@@ -147,3 +147,27 @@ export const refreshTokenController = async (req: Req, reply: Reply) => {
     });
   }
 };
+
+export const profileController = async (req:Req ,reply:Reply)=>{
+    try{
+        const {id} = req.params as {id:string} ;
+        if(!id){
+            return reply.code(400).send({
+                message:'ID is not exist',
+                statusCode:400
+            });
+        };
+
+        const profile = await getProfile(id);
+        return reply.code(200).send({
+            message:'Get profile successfully',
+            statusCode:200,
+            data:profile
+        });
+    }catch(error:any){
+        return reply.code(400).send({
+            message:error.message,
+            statusCode:400
+        })
+    }
+}
