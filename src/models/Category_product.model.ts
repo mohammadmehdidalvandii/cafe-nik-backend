@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { categoryProductProps } from "@/types/categoryProduct.js";
+import { DataTypes, Model } from "sequelize";
 
-export const CategoryProduct = sequelize.define('CategoryProduct',{
+type categoryProductInstance = Model<categoryProductProps> & categoryProductProps
+
+export const CategoryProduct = sequelize.define<categoryProductInstance>('CategoryProduct',{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
