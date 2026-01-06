@@ -11,8 +11,8 @@ City.hasMany(Branch , {foreignKey:'city_id', as:'branch'});
 Branch.belongsTo(City , {foreignKey:'city_id', as:'city'});
 
 // Category -> Menu
-CategoryProduct.hasMany(Menu , {foreignKey:'category_id'});
-Menu.belongsTo(CategoryProduct , {foreignKey:'category_id'});
+CategoryProduct.hasMany(Menu , {foreignKey:'category_id', as:'menu'});
+Menu.belongsTo(CategoryProduct , {foreignKey:'category_id', as:'categoryProduct'});
 
 // User -> Order
 User.hasMany(Order , {foreignKey:"user_id"});
