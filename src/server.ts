@@ -3,15 +3,16 @@ import sequelize from "./config/db.js";
 import cookie from '@fastify/cookie'
 import authRoutes from "./routes/auth.routes.js";
 import citiesRoutes from "./routes/city.route.js";
+import branchRoutes from "./routes/branch.routes.js";
 
 const fast = fastify({logger:true});
 
 fast.register(cookie);
 
 // Routes 
- fast.register(authRoutes ,{prefix:'/api/auth'});
- fast.register(citiesRoutes, {prefix:'/api/city'});
-
+fast.register(authRoutes ,{prefix:'/api/auth'});
+fast.register(citiesRoutes, {prefix:'/api/city'});
+fast.register(branchRoutes , {prefix:'/api/branch'});
 
 const start = async ()=>{
     try{
