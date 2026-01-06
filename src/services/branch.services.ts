@@ -1,4 +1,4 @@
-import {Branch} from '@/models/index.js';
+import {Branch, City} from '@/models/index.js';
 import { CreateBranchProps } from '@/types/branch.js';
 
 export const createBranch = async ({name , country , city_id , address , manager_name , phone}:CreateBranchProps)=>{
@@ -14,17 +14,23 @@ export const createBranch = async ({name , country , city_id , address , manager
 };
 
 export const getAllBranches = async ()=>{
-    const branches = await Branch.findAll();
+    const branches = await Branch.findAll({include:[{
+        model:City,
+        as:'city',
+    }]});
     return branches
 };
 
 export const getBranchById = async (id:string)=>{
-    const branch = await Branch.findByPk(id);
+    const branch = await Branch.findByPk(id,);
     return branch
 };
 
 export const updateBranch = async (id:string, data:Partial<{name:string , country:string , city_id:string , address:string , manager_name:string , phone:string}>)=>{
-    const branch = await Branch.findByPk(id);
+    const branch = await Branch.findByPk(id,{include:[{
+        model:City,
+        as:'city'
+    }]});
     if(!branch) throw new Error('این شعبه موجود نیست ');
 
         const allowedFields:(keyof CreateBranchProps)[] = [

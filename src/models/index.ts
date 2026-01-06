@@ -7,8 +7,8 @@ import { Order } from "./order.model.js";
 import { OrderItem } from "./orderitem.model.js";
 
 // City -> Branch
-City.hasMany(Branch , {foreignKey:'city_id'});
-Branch.belongsTo(City , {foreignKey:'city_id'});
+City.hasMany(Branch , {foreignKey:'city_id', as:'branch'});
+Branch.belongsTo(City , {foreignKey:'city_id', as:'city'});
 
 // Category -> Menu
 CategoryProduct.hasMany(Menu , {foreignKey:'category_id'});
