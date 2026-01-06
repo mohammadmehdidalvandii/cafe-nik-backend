@@ -13,7 +13,7 @@ export const createMenu = async({name , description , category_id , is_active , 
         category_id,
         is_active,
         base_price:base_price|| null,
-        size,
+        size:size || null,
     });
 
     return newMenu
@@ -22,7 +22,7 @@ export const createMenu = async({name , description , category_id , is_active , 
 export const getAllMenu = async ()=>{
     const menu = await Menu.findAll({include:[{
         model:CategoryProduct,
-        as:'categoryProduct'
+        as:'categoryProduct',
     }]});
 
     return menu;

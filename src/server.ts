@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes.js";
 import citiesRoutes from "./routes/city.route.js";
 import branchRoutes from "./routes/branch.routes.js";
 import categoryProductRoutes from "./routes/category_product.routes.js";
+import menuRoutes from "./routes/menu.routes.js";
 
 const fast = fastify({logger:true});
 
@@ -15,6 +16,7 @@ fast.register(authRoutes ,{prefix:'/api/auth'});
 fast.register(citiesRoutes, {prefix:'/api/city'});
 fast.register(branchRoutes , {prefix:'/api/branch'});
 fast.register(categoryProductRoutes , {prefix:'/api/category-product'});
+fast.register(menuRoutes ,{prefix:'/api/menu'})
 
 const start = async ()=>{
     try{
