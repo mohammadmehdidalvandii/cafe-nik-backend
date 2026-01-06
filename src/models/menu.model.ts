@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { MenuProps } from "@/types/menu.js";
+import { DataTypes, Model } from "sequelize";
 
-export const Menu = sequelize.define("Menu",{
+type MenuInstance = Model<MenuProps> & MenuProps;
+
+export const Menu = sequelize.define<MenuInstance>("Menu",{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
