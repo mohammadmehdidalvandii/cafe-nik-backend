@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { BranchProps } from "@/types/branch.js";
+import { DataTypes, Model } from "sequelize";
 
-export const Branch = sequelize.define('Branch',{
+type BranchInstance = Model<BranchProps> & BranchProps
+
+export const Branch = sequelize.define<BranchInstance>('Branch',{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
