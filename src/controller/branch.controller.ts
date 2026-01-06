@@ -96,4 +96,28 @@ export const updateBranchController = async (req:Req , reply:Reply)=>{
             statusCode:400
         })
     }
+};
+
+export const deleteBranchController = async (req:Req , reply:Reply)=>{
+    try{
+        const {id} = req.params as {id:string};
+        if(!id){
+            return reply.code(400).send({
+                message:'ایدی نامعتبر است',
+                statusCode:400,
+            })
+        };
+        
+        const deleted = await deleteBranch(id) ;
+        return reply.code(203).send({
+            message:'شعبه مورد نظر پاک شد',
+            statusCode:203,
+            data:deleted,
+        })
+    }catch(error:any){
+        return reply.code(400).send({
+            message:error.message,
+            statusCode:400
+        })   
+    }
 }
