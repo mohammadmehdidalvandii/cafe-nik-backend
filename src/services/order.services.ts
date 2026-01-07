@@ -44,7 +44,7 @@ export const updateOrder = async (id:string , data:Partial<{status:'در انت�
     const order = await Order.findByPk(id);
     if(!order) throw new Error('سفارش یافت نشد');
 
-    await order.update({status:order.status});
+    await order.update({status:data.status});
 
     return order;
 };
