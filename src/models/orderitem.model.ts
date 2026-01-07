@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { OrderItemProps } from "@/types/orderItem.js";
+import { DataTypes, Model } from "sequelize";
 
-export const OrderItem = sequelize.define('OrderItem',{
+type orderItemInstance = Model<OrderItemProps> & OrderItemProps;
+
+export const OrderItem = sequelize.define<orderItemInstance>('OrderItem',{
     id:{
         type:DataTypes.UUID,
         primaryKey:true,
