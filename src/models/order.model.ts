@@ -1,7 +1,10 @@
 import sequelize from "@/config/db.js";
-import { DataTypes } from "sequelize";
+import { OrderProps } from "@/types/order.js";
+import { DataTypes, Model } from "sequelize";
 
-export const Order = sequelize.define('Order',{
+type orderInstance = Model<OrderProps> & OrderProps;
+
+export const Order = sequelize.define<orderInstance>('Order',{
     id:{
         type:DataTypes.UUID,
         defaultValue:DataTypes.UUIDV4,
@@ -23,7 +26,7 @@ export const Order = sequelize.define('Order',{
         type:DataTypes.DATEONLY,
         allowNull:false,
     },
-    delivery_code:{
+    delivery_time:{
         type:DataTypes.TIME,
         allowNull:false,
     },
