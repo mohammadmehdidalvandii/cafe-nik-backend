@@ -89,7 +89,7 @@ export const updateOrderController = async (req:Req , reply:Reply)=>{
 
         const {status} = req.body as OrderUpdataProps
 
-        const updated = await updateOrder(id , {status});
+        const updated = await updateOrder(id,{status});
 
         reply.code(200).send({
             message:'تغیرات سفارش انجام شد',

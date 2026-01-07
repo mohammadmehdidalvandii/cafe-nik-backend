@@ -19,8 +19,8 @@ User.hasMany(Order , {foreignKey:"user_id" , as:'order'});
 Order.belongsTo(User, {foreignKey:'user_id' , as:'user'});
 
 // Branch -> Order
-Branch.hasMany(Order , {foreignKey:'branch_id'});
-Order.belongsTo(Branch , {foreignKey:"branch_id"});
+Branch.hasMany(Order , {foreignKey:'branch_id', as:'order'});
+Order.belongsTo(Branch , {foreignKey:"branch_id", as:'branch'});
 
 // Menu -> OrderItem
 Menu.hasMany(OrderItem , {foreignKey:"menu_id"});
