@@ -4,16 +4,9 @@ import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
 
 export const createOrderController = async (req:Req , reply:Reply)=>{
     try{
-        const {user_id , branch_id ,total_price ,delivery_date ,delivery_time ,pickup_code ,status} = req.body as OrderCreateProps;
-        const order = await createOrder({
-            user_id,
-            branch_id,
-            total_price,
-            delivery_date,
-            delivery_time,
-            pickup_code,
-            status
-        });
+        const data = req.body as any ;  
+        console.log("data =>" , data)
+        const order = await createOrder(data)
 
         reply.code(201).send({
             message:'سفارش شما ثبت شد',

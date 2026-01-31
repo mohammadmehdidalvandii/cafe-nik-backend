@@ -7,6 +7,7 @@ type orderItemInstance = Model<OrderItemProps> & OrderItemProps;
 export const OrderItem = sequelize.define<orderItemInstance>('OrderItem',{
     id:{
         type:DataTypes.UUID,
+        defaultValue:DataTypes.UUIDV4,
         primaryKey:true,
     },
     order_id:{
