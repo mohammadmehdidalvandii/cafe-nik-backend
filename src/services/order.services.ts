@@ -61,7 +61,11 @@ export const getAllOrders = async ()=>{
     const orders = await Order.findAll({include:[
         { model:User , as:'user', attributes:{exclude:['password']}},
         {model:Branch, as:'branch'},
-    ]
+        {model:OrderItem , as:'order_items', include:[
+            {model:Menu , as:'menu', attributes:['id', 'name']}
+        ]}
+    ],
+    order:[['created_at','DESC']]
     })
 
     return orders

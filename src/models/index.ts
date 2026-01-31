@@ -22,9 +22,16 @@ Order.belongsTo(User, {foreignKey:'user_id' , as:'user'});
 Branch.hasMany(Order , {foreignKey:'branch_id', as:'order'});
 Order.belongsTo(Branch , {foreignKey:"branch_id", as:'branch'});
 
+// Order -> OrderItem
+Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'order_items' });
+OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
+
 // Menu -> OrderItem
-Menu.hasMany(OrderItem , {foreignKey:"menu_id"});
-OrderItem.belongsTo(Menu , {foreignKey:"menu_id"});
+// Menu.hasMany(OrderItem , {foreignKey:"orderItem"});
+// OrderItem.belongsTo(Menu , {foreignKey:"menu"});
+
+OrderItem.belongsTo(Menu , {foreignKey:'menu_id', as:"menu"});
+Menu.hasMany(OrderItem, {foreignKey:'menu_id',as:'order_item'})
 
 export {
     User,
