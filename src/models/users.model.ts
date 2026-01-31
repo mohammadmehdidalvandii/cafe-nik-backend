@@ -30,7 +30,7 @@ export  const User = sequelize.define<userInstance>("User",{
         defaultValue:'مشتری',
     },
     login_method:{
-        type:DataTypes.ENUM('password','OTP','guest'),
+        type:DataTypes.ENUM('password','OTP','guest','phone'),
         defaultValue:'password',
     },
     is_guest:{

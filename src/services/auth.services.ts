@@ -115,6 +115,71 @@ export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
     return register
 };
 
+
+// RegisterWithPhoneOTP
+export const registerWithPhoneSendOTP = async (phone:string)=>{
+    let user = await User.findOne({where:{phone}});
+    if(user){
+        const isFirstUser = (await User.count()) === 0;
+        const roles = isFirstUser ? 'مشتری' : 'مدیریت';
+
+        user = await User.create({
+            phone,
+            roles,
+            login_method:'phone',
+            is_guest:true
+        })
+    };
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expires_at = new Date(Date.now() + 2 * 60 *1000);
+
+    await Otp.create({
+        phone,
+        code,
+        expires_at,
+        used:false
+    });
+
+    await sendOTPSms(phone , code);
+    return {message:'کد تایید ارسال شد'}
+}
+
+export const verifyPhoneOtp = async (phone:string , code:string)=>{
+    const otp = await Otp.findOne({
+        where:{
+            phone,
+            code,
+            used:false,
+            expires_at: { [Op.gt]: new Date() },
+        }
+    });
+
+    if(!otp){
+        throw new Error('کد تایید نامعتبر یا منقضی شده است')
+    };
+
+    otp.used = true,
+    await otp.save();
+
+    const user = await User.findOne({where:{phone}});
+    if(!user) throw new Error('کاربر یافت نشد')
+
+
+        const accessToken  = generateAccessToken({
+        id:user.id,
+        username:user.username,
+        phone:user.phone,
+        roles:user.roles,
+        email:user.email,
+    });
+    const refreshToken = generateRefreshToken({
+        id:user.id
+    });
+
+    return {accessToken , refreshToken}
+}
+
 export const loginWithPassword = async({email , password}:LoginWithPassword)=>{
     const account = await User.findOne({where:{email}});
     if(!account){

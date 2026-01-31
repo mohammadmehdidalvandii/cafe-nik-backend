@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
@@ -171,6 +171,40 @@ export const profileController = async (req:Req ,reply:Reply)=>{
         })
     }
 };
+
+export const sendPhoneOtpController = async (req:Req , reply:Reply)=>{
+    try{
+    const {phone } = req.body as VerifyCodeOtpProps;
+    const code  = await registerWithPhoneSendOTP(phone);
+    return reply.code(200).send({
+        message:'کد تایید ارسال شد',
+        statusCode:200,
+        data:code
+    });
+    }catch(error:any){
+        return reply.code(400).send({
+            message:error.message,
+            statusCode:400,
+        })
+    }
+};
+
+export const verifyPhoneOtpController = async (req:Req, reply:Reply)=>{
+    try{
+        const {phone , code} = req.body as {code:string, phone:string};
+        const result = await verifyPhoneOtp(phone , code);
+        reply.code(201).send({
+            message:'ثبت نام شما موفقیت آمیز بود',
+            statusCode:201,
+            data:result
+        })
+    }catch(error:any){
+       return reply.code(400).send({
+        message:error.message,
+        statusCode:400
+       })
+    }
+}
 
 export const logoutController = async (req:Req , reply:Reply)=>{
     reply.clearCookie('refreshToken');

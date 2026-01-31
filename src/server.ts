@@ -7,10 +7,15 @@ import branchRoutes from "./routes/branch.routes.js";
 import categoryProductRoutes from "./routes/category_product.routes.js";
 import menuRoutes from "./routes/menu.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import cors from '@fastify/cors'
 
 const fast = fastify({logger:true});
 
 fast.register(cookie);
+fast.register(cors,{
+    origin:'http://localhost:5173',
+    credentials:true
+})
 
 // Routes 
 fast.register(authRoutes ,{prefix:'/api/auth'});

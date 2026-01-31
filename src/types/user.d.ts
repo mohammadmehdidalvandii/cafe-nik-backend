@@ -1,5 +1,5 @@
 export type UserRole = 'مشتری'|'مدیرشعبه'|'مدیریت';
-export type LoginMethod = 'password'|'OTP'|'guest';
+export type LoginMethod = 'password'|'OTP'|'guest'|'phone';
 
 export interface UserAttributes{
     id?:string,
