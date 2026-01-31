@@ -27,8 +27,8 @@ Order.hasMany(OrderItem, { foreignKey: 'order_id', as: 'order_items' });
 OrderItem.belongsTo(Order, { foreignKey: 'order_id', as: 'order' });
 
 
-OrderItem.belongsTo(Menu , {foreignKey:'menu_id', as:"menu"});
 Menu.hasMany(OrderItem, {foreignKey:'menu_id',as:'order_item'})
+OrderItem.belongsTo(Menu , {foreignKey:'menu_id', as:"menu"});
 
 export {
     User,
