@@ -1,4 +1,4 @@
-import {createOrder , getAllOrders ,getOrderById ,deleteOrder ,updateOrder} from '@/services/order.services.js';
+import {createOrder , getAllOrders ,getOrderById ,deleteOrder ,updateOrder, markOrderAsDelivered} from '@/services/order.services.js';
 import { Reply, Req } from '@/types/fastify.js';
 import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
 
@@ -110,6 +110,23 @@ export const deleteOrderController = async (req:Req , reply:Reply)=>{
         reply.code(400).send({
             message:error.message,
             statusCode:400,
+        })
+    }
+};
+
+export const deliveredOrderController = async (req:Req , reply:Reply)=>{
+    try{
+        const {pickupCode} = req.body as {pickupCode:string};
+        const order = await markOrderAsDelivered(pickupCode);
+        return reply.code(200).send({
+            message:'سفارش تحویل داد شد',
+            statusCode:200,
+            data:order,
+        })
+    }catch(error:any){
+        return reply.code(400).send({
+            message:error.message,
+            statusCode:400
         })
     }
 }

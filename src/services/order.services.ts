@@ -109,3 +109,17 @@ export const deleteOrder = async (id:string)=>{
     const deleted = await order.destroy();
     return deleted
 }
+
+export const markOrderAsDelivered = async (pickupCode:string)=>{
+    try{
+        const order = await Order.findOne({where:{pickup_code:pickupCode}});
+        if(!order) throw new Error('سفارش با کد تحویل پیدا نشد');
+
+         order.status = 'تحویل داد شد';
+
+         await order.save();
+         return order
+    }catch(error:any){
+        throw new Error(error.message || error);
+    }
+}
