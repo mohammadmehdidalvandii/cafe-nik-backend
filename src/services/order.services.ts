@@ -27,8 +27,13 @@ export const createOrder = async ({user_id , branch_id  , delivery_time , delive
             const menu = await Menu.findByPk(item.menu_id ,{transaction});
             if(!menu)throw new Error('محصول یافت نشد');
 
-            const unit_price = menu.size[item.size];
-            if(!unit_price) throw new Error('سایز نامعتبر');
+  let unit_price;
+      if (menu.size && item.size) {
+        unit_price = menu.size[item.size];    
+        if (!unit_price) throw new Error('سایز نامعتبر');
+      } else {
+        unit_price = menu.base_price;   
+      }
 
             const itemTotal = unit_price * item.quantity;
             total_price += itemTotal;
