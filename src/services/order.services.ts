@@ -2,6 +2,7 @@ import sequelize from '@/config/db.js';
 import {Order , User , Branch, Menu, OrderItem} from '@/models/index.js';
 import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
 import { OrderItemProps } from '@/types/orderItem.js';
+import { sendOrderItems } from './sms.services.js';
 
 const generatePickUpCode = ()=>{
     return Math.floor(100000 + Math.random() * 90000).toString();
@@ -49,7 +50,18 @@ export const createOrder = async ({user_id , branch_id  , delivery_time , delive
             await OrderItem.bulkCreate(orderItemsData , {transaction});
             await order.update({total_price},{transaction});
             await transaction.commit();
-
+            
+            const user = await User.findByPk(order.user_id);
+            if(user){
+                await sendOrderItems(
+                    user.phone,
+                    user.username || 'کاربرمهان',
+                    order.delivery_date,
+                    order.delivery_time,
+                    order.pickup_code,
+                )
+            }
+            
             return order
     }catch(error:any){
         await transaction.rollback();

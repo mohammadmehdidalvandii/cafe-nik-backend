@@ -5,7 +5,6 @@ import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
 export const createOrderController = async (req:Req , reply:Reply)=>{
     try{
         const data = req.body as any ;  
-        console.log("data =>" , data)
         const order = await createOrder(data)
 
         reply.code(201).send({
