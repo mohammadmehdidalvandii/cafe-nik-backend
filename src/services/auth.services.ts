@@ -42,10 +42,11 @@ export const registerWithPassword = async ({username , phone , email , password}
 export const sendOTP = async ({phone}:RegisterWithOTPProps)=>{
     let user = await User.findOne({where:{phone}});
     if(!user){
-  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+          const isFirstUser = (await User.count()) ;
+         const roles = isFirstUser === 0 ? 'مدیریت' : 'مشتری';
         user = await User.create({
             phone,
-            roles:role,
+            roles:roles,
             login_method:'OTP',
             is_guest:true
         })
@@ -102,8 +103,8 @@ export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
     }; 
 
 
-  const isFirstUser = (await User.count()) === 0;
-  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+  const isFirstUser = (await User.count()) ;
+  const roles = isFirstUser === 0 ? 'مدیریت' : 'مشتری';
 
     const register = await User.create({
         username,
@@ -120,12 +121,12 @@ export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
 export const registerWithPhoneSendOTP = async (phone:string)=>{
     let user = await User.findOne({where:{phone}});
     if(user){
-        const isFirstUser = (await User.count()) === 0;
-  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
+        const isFirstUser = (await User.count()) ;
+  const roles = isFirstUser === 0 ? 'مدیریت' : 'مشتری';
 
         user = await User.create({
             phone,
-            roles,
+            roles:roles,
             login_method:'phone',
             is_guest:true
         })
