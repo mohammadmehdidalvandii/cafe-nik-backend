@@ -192,11 +192,23 @@ export const sendPhoneOtpController = async (req:Req , reply:Reply)=>{
 export const verifyPhoneOtpController = async (req:Req, reply:Reply)=>{
     try{
         const {phone , code} = req.body as {code:string, phone:string};
-        const result = await verifyPhoneOtp(phone , code);
+        const {accessToken , refreshToken} = await verifyPhoneOtp(phone , code);
+
+            if(!refreshToken){
+                    throw new Error('Refresh Token not generate')                   
+            }
+             reply.cookie('refreshToken',refreshToken,{
+                httpOnly:true,
+                secure:true,
+                sameSite:'strict',
+                path:'/',
+                maxAge:60 * 60 * 24 * 7
+             });
+
         reply.code(201).send({
             message:'ثبت نام شما موفقیت آمیز بود',
             statusCode:201,
-            data:result
+            data:[accessToken]
         })
     }catch(error:any){
        return reply.code(400).send({
