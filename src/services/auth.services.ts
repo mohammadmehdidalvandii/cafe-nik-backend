@@ -190,7 +190,7 @@ export const loginWithPassword = async({email , password}:LoginWithPassword)=>{
     }
     const isValid = await comparePassword(password , account.password);
     if(!isValid){
-        throw new Error('شماره تلفن یا رمز عبور اشتباه است !');
+        throw new Error('ایمیل یا رمز عبور اشتباه است !');
     };
 
     const accessToken  = generateAccessToken({
