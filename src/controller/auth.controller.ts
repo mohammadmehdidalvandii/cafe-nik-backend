@@ -68,7 +68,7 @@ export const sendOtpController = async (req:Req , reply:Reply)=>{
 export const verifyOtpController = async (req:Req , reply:Reply)=>{
     try{
         const {phone , code} = req.body as VerifyCodeOtpProps;
-            const {user , accessToken ,refreshToken} = await verifyCode({phone , code});
+            const {accessToken ,refreshToken} = await verifyCode({phone , code});
                if(!refreshToken){
                     throw new Error('Refresh Token not generate')                   
             }
@@ -83,7 +83,7 @@ export const verifyOtpController = async (req:Req , reply:Reply)=>{
         reply.code(201).send({
             message:'ورود شما موفقیت امیز بود',
             statusCode:401,
-            data: {accessToken , user}
+            data: {accessToken}
         })
     }catch(error:any){
         reply.code(401).send({
