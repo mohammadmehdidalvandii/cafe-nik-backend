@@ -21,7 +21,7 @@ export const registerWithPassword = async ({username , phone , email , password}
 
 
   const isFirstUser = (await User.count()) === 0;
-  const roles = isFirstUser ? 'مشتری' : 'مدیریت';
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
 
     const hashPassword = await hashedPassword(password);
 
@@ -42,7 +42,7 @@ export const registerWithPassword = async ({username , phone , email , password}
 export const sendOTP = async ({phone}:RegisterWithOTPProps)=>{
     let user = await User.findOne({where:{phone}});
     if(!user){
-        const role = (await User.count()) === 0 ? 'مشتری' : 'مدیریت';
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
         user = await User.create({
             phone,
             roles:role,
@@ -121,7 +121,7 @@ export const registerWithPhoneSendOTP = async (phone:string)=>{
     let user = await User.findOne({where:{phone}});
     if(user){
         const isFirstUser = (await User.count()) === 0;
-        const roles = isFirstUser ? 'مشتری' : 'مدیریت';
+  const roles = isFirstUser ? 'مدیریت' : 'مشتری';
 
         user = await User.create({
             phone,
