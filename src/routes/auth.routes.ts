@@ -17,5 +17,5 @@ export default async function authRoutes(fastify:fast){
     fastify.post('/logout', logoutController);
     fastify.post('/registerPhone', sendOtpController);
     fastify.post('/register-code', verifyPhoneOtpController)
-    fastify.get('/profile/:id',{preHandler: authenticateToken} , profileController);
+    fastify.get('/profile',{preHandler: authenticateToken} , profileController);
 }

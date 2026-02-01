@@ -150,15 +150,10 @@ export const refreshTokenController = async (req: Req, reply: Reply) => {
 
 export const profileController = async (req:Req ,reply:Reply)=>{
     try{
-        const {id} = req.params as {id:string} ;
-        if(!id){
-            return reply.code(400).send({
-                message:'ID is not exist',
-                statusCode:400
-            });
-        };
 
-        const profile = await getProfile(id);
+        const user = (req as any).user
+
+        const profile = await getProfile(user.id);
         return reply.code(200).send({
             message:'Get profile successfully',
             statusCode:200,
