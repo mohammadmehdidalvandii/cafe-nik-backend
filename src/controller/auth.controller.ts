@@ -69,6 +69,7 @@ export const verifyOtpController = async (req:Req , reply:Reply)=>{
     try{
         const {phone , code} = req.body as VerifyCodeOtpProps;
             const {accessToken ,refreshToken} = await verifyCode({phone , code});
+            console.log("refresh token =>", refreshToken)
                if(!refreshToken){
                     throw new Error('Refresh Token not generate')                   
             }
