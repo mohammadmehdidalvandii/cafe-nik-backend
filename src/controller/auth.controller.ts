@@ -82,7 +82,7 @@ export const verifyOtpController = async (req:Req , reply:Reply)=>{
             
         reply.code(201).send({
             message:'ورود شما موفقیت امیز بود',
-            statusCode:401,
+            statusCode:201,
             data: {accessToken}
         })
     }catch(error:any){
