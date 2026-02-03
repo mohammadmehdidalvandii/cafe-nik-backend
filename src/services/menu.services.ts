@@ -69,6 +69,6 @@ export const updateMenu = async (id:string , data:Partial<{name:string, descript
 export const deleteMenu = async (id:string)=>{
     const existMenu = await Menu.findByPk(id);
     if(!existMenu) throw new Error('این  محصول در منو وجود نداره');
-    const deleted = await Menu.destroy();
+    const deleted = await Menu.destroy({where:{id}});
     return deleted;
 };

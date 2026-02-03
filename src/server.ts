@@ -14,7 +14,8 @@ const fast = fastify({logger:true});
 fast.register(cookie);
 fast.register(cors,{
     origin:'http://localhost:5173',
-    credentials:true
+    credentials:true,
+    methods:['DELETE','PUT','GET','POST']
 })
 
 // Routes 
