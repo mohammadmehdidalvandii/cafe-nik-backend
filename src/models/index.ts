@@ -10,6 +10,10 @@ import { OrderItem } from "./orderitem.model.js";
 City.hasMany(Branch , {foreignKey:'city_id', as:'branch'});
 Branch.belongsTo(City , {foreignKey:'city_id', as:'city'});
 
+// User -> branch
+User.hasOne(Branch, {foreignKey:'users_id', as:'branch'});
+Branch.belongsTo(User,{foreignKey:'users_id',as:"user"})
+
 // Category -> Menu
 CategoryProduct.hasMany(Menu , {foreignKey:'category_id', as:'menu'});
 Menu.belongsTo(CategoryProduct , {foreignKey:'category_id', as:'categoryProduct'});

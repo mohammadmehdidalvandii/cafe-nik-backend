@@ -26,8 +26,8 @@ export const Branch = sequelize.define<BranchInstance>('Branch',{
         type:DataTypes.STRING(200),
         allowNull:false,
     },
-    manager_name:{
-        type:DataTypes.STRING(50),
+    users_id:{
+        type:DataTypes.UUID,
         allowNull:false,
     },
     phone:{

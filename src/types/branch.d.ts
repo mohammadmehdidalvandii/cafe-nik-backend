@@ -4,7 +4,7 @@ export interface BranchProps{
     country:string,
     city_id:string,
     address:string,
-    manager_name:string,
+    users_id:string,
     phone:string,
 }
 
@@ -13,6 +13,6 @@ export interface CreateBranchProps{
     country:string,
     city_id:string,
     address:string,
-    manager_name:string,
+    users_id:string,
     phone:string,
 }

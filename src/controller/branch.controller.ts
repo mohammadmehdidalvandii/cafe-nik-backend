@@ -3,13 +3,14 @@ import { Reply, Req } from '@/types/fastify.js';
 
 export const createBranchController = async (req:Req , reply:Reply)=>{
     try{
-        const {name , country ,  city_id , address , manager_name , phone} = req.body as any;
+        const {name , country ,  city_id , address , users_id , phone} = req.body as any;
+        console.log("users_id", users_id)
         const branch = await createBranch({
             name , 
             city_id,
             country,
             address,
-            manager_name,
+            users_id,
             phone
         });
 
@@ -77,7 +78,7 @@ export const updateBranchController = async (req:Req , reply:Reply)=>{
             })
         };
         const updateData:Record<string , any> = {};
-        const allowedFields = ['name', 'country', 'city_id', 'address', 'manager_name', 'phone'];
+        const allowedFields = ['name', 'country', 'city_id', 'address', 'users_id', 'phone'];
         for(const key of allowedFields){
             if((req as any).body[key] !== undefined){
                 updateData[key] = (req as any).body[key]

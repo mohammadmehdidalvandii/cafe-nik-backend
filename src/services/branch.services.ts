@@ -1,13 +1,13 @@
-import {Branch, City} from '@/models/index.js';
+import {Branch, City, User} from '@/models/index.js';
 import { CreateBranchProps } from '@/types/branch.js';
 
-export const createBranch = async ({name , country , city_id , address , manager_name , phone}:CreateBranchProps)=>{
+export const createBranch = async ({name , country , city_id , address , users_id , phone}:CreateBranchProps)=>{
     const branch = await Branch.create({
         name,
         country,
         city_id,
         address,
-        manager_name,
+        users_id,
         phone,
     });
      return branch
@@ -17,6 +17,12 @@ export const getAllBranches = async ()=>{
     const branches = await Branch.findAll({include:[{
         model:City,
         as:'city',
+    },{
+        model:User,
+        as:'user',
+        attributes:{
+            exclude:['password']
+        }
     }]});
     return branches
 };
@@ -26,7 +32,7 @@ export const getBranchById = async (id:string)=>{
     return branch
 };
 
-export const updateBranch = async (id:string, data:Partial<{name:string , country:string , city_id:string , address:string , manager_name:string , phone:string}>)=>{
+export const updateBranch = async (id:string, data:Partial<{name:string , country:string , city_id:string , address:string , users_id:string , phone:string}>)=>{
     const branch = await Branch.findByPk(id,{include:[{
         model:City,
         as:'city'
@@ -38,7 +44,7 @@ export const updateBranch = async (id:string, data:Partial<{name:string , countr
         'city_id',
         'country',
         'address',
-        'manager_name',
+        'users_id',
         'phone',
     ];
 
