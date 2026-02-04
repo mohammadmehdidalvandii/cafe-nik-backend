@@ -1,4 +1,4 @@
-import {createBranch , getAllBranches , getBranchById , updateBranch , deleteBranch} from '@/services/branch.services.js';
+import {createBranch , getAllBranches , getBranchById , updateBranch , deleteBranch, getBranchUserId} from '@/services/branch.services.js';
 import { Reply, Req } from '@/types/fastify.js';
 
 export const createBranchController = async (req:Req , reply:Reply)=>{
@@ -67,6 +67,30 @@ export const getBranchIdController = async (req:Req , reply:Reply)=>{
         })
     }
 };
+
+export const getBranchUserIdController = async (req:Req , reply:Reply)=>{
+    try{
+        const {id} = req.params as {id:string};
+        if(!id){
+            return reply.code(400).send({
+                message:'چنین ایدی وجود نداره',
+                statusCode:400,
+            });
+        };
+        
+        const branch = await getBranchUserId(id);
+        reply.code(200).send({
+            message:'شعبه مورد نظر یافت شد',
+            statusCode:200,
+            data:branch
+        })
+    }catch(error:any){
+        reply.code(400).send({
+            message:error.message,
+            statusCode:400
+        })
+    }
+}
 
 export const updateBranchController = async (req:Req , reply:Reply)=>{
     try{

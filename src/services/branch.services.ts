@@ -32,6 +32,19 @@ export const getBranchById = async (id:string)=>{
     return branch
 };
 
+
+export const getBranchUserId = async (users_id:string)=>{
+    const branch = await Branch.findOne({
+        where:{users_id},
+        include:[
+            {model:City , as:'city'},
+            {model:User, as:'user', attributes:{exclude:['password']}}
+        ]
+    });
+
+    return branch
+}
+
 export const updateBranch = async (id:string, data:Partial<{name:string , country:string , city_id:string , address:string , users_id:string , phone:string}>)=>{
     const branch = await Branch.findByPk(id,{include:[{
         model:City,
