@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
@@ -25,6 +25,29 @@ export const registerPasswordController = async (req:Req , reply:Reply)=>{
         })
     }
 };
+
+export const registerManagerBranchController = async (req:Req , reply:Reply)=>{
+    try{
+        const {username , email , phone , password} = req.body as RegisterWithPasswordProps;
+        const user = await registerManagerBranch({
+            username,
+            email,
+            phone,
+            password
+        });
+
+        reply.code(201).send({
+            message:"حساب کاربری با موفقیت ایجاد شد",
+            data:user,
+        })
+
+    }catch(error:any){
+        reply.code(401).send({
+            message:error.message,
+            statusCode:401
+        })
+    }
+}
 
 export const registerGuessController = async (req:Req , reply:Reply )=>{
     try{

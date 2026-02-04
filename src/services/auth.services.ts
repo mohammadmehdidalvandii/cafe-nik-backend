@@ -19,7 +19,6 @@ export const registerWithPassword = async ({username , phone , email , password}
         throw new Error('کاربر از قبل وجود دارد')
     };
 
-
   const isFirstUser = (await User.count()) === 0;
   const roles = isFirstUser ? 'مدیریت' : 'مشتری';
 
@@ -37,6 +36,33 @@ export const registerWithPassword = async ({username , phone , email , password}
 
     return register
 };
+
+// Register Manager Branch
+export const registerManagerBranch = async ({username , phone , email , password}:RegisterWithPasswordProps)=>{
+    const exitsUser = await User.findOne({
+        where:{[Op.or]:[{email} , {phone}]}
+    });
+    if(exitsUser){
+        throw new Error('کاربر از قبل ثبت نام کرد')
+    };
+    const nonGuestCount = await User.count({where:{is_guest:false}});
+    const roles = nonGuestCount === 0 ? 'مدیریت' : 'مدیر شعبه';
+
+    const hashPassword = await hashedPassword(password);
+
+    const newUser = await User.create({
+        username,
+        phone,
+        email,
+        roles:roles,
+        password:hashPassword,
+        login_method:'password',
+        is_guest:false
+    });
+
+    return newUser
+}
+
 
 // Register by OTP
 export const sendOTP = async ({phone}:RegisterWithOTPProps)=>{
