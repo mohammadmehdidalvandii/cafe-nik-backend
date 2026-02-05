@@ -2,6 +2,17 @@ import {Branch, City, User} from '@/models/index.js';
 import { CreateBranchProps } from '@/types/branch.js';
 
 export const createBranch = async ({name , country , city_id , address , users_id , phone}:CreateBranchProps)=>{
+    const existManager = await Branch.findOne({
+        where:{
+            users_id
+        }
+    });
+
+    if(existManager){
+        throw new Error('به این مدیر قبلا یک شعبه اختصاص داده شده است.')
+    }
+
+
     const branch = await Branch.create({
         name,
         country,
