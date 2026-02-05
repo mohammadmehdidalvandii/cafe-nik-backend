@@ -4,7 +4,6 @@ import { Reply, Req } from '@/types/fastify.js';
 export const createBranchController = async (req:Req , reply:Reply)=>{
     try{
         const {name , country ,  city_id , address , users_id , phone} = req.body as any;
-        console.log("users_id", users_id)
         const branch = await createBranch({
             name , 
             city_id,
@@ -34,7 +33,7 @@ export const getBranchesController = async (req:Req , reply:Reply)=>{
         reply.code(200).send({
             message:'لیست تمام  شعبات',
             statusCode:200,
-            date:branches
+            data:branches
         })
     }catch(error:any){
         reply.code(500).send({
