@@ -1,7 +1,7 @@
 import {Branch, City, User} from '@/models/index.js';
-import { CreateBranchProps } from '@/types/branch.js';
+import { CreateBranchProps, UpdateBranchProps } from '@/types/branch.js';
 
-export const createBranch = async ({name , country , city_id , address , users_id , phone}:CreateBranchProps)=>{
+export const createBranch = async ({name , country , city_id , address , users_id , phone , orders_count , total_revenue}:CreateBranchProps)=>{
     const existManager = await Branch.findOne({
         where:{
             users_id
@@ -20,6 +20,8 @@ export const createBranch = async ({name , country , city_id , address , users_i
         address,
         users_id,
         phone,
+        orders_count:orders_count ||0,
+        total_revenue: total_revenue||0,
     });
      return branch
 };
@@ -63,7 +65,7 @@ export const updateBranch = async (id:string, data:Partial<{name:string , countr
     }]});
     if(!branch) throw new Error('این شعبه موجود نیست ');
 
-        const allowedFields:(keyof CreateBranchProps)[] = [
+        const allowedFields:(keyof UpdateBranchProps)[] = [
         'name',
         'city_id',
         'country',
