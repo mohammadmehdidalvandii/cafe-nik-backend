@@ -1,6 +1,7 @@
 import sequelize from "@/config/db.js";
 import { OrderProps } from "@/types/order.js";
 import { DataTypes, Model } from "sequelize";
+import { Branch } from "./branch.model.js";
 
 type orderInstance = Model<OrderProps> & OrderProps;
 
@@ -49,3 +50,12 @@ export const Order = sequelize.define<orderInstance>('Order',{
     tableName:"orders",
     underscored:true
 });
+
+Order.afterSave(async (order , options)=>{
+    await Branch.increment(
+        {orders_count:1, total_revenue:order.total_price},
+        {where:{id:order.branch_id},
+        transaction:options.transaction
+    }
+    )
+})
