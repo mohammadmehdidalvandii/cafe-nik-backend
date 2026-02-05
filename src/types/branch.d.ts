@@ -6,6 +6,8 @@ export interface BranchProps{
     address:string,
     users_id:string,
     phone:string,
+    orders_count:number
+    total_revenue:number
 }
 
 export interface CreateBranchProps{

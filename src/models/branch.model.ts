@@ -33,6 +33,16 @@ export const Branch = sequelize.define<BranchInstance>('Branch',{
     phone:{
         type:DataTypes.STRING(11),
         allowNull:false,
+    },
+    orders_count:{
+        type:DataTypes.INTEGER,
+        defaultValue:0,
+        allowNull:false
+    },
+    total_revenue:{
+        type:DataTypes.INTEGER,
+        defaultValue:0,
+        allowNull:false
     }
 },{
     tableName:"branches",
