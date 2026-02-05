@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 
@@ -243,4 +243,22 @@ export const logoutController = async (req:Req , reply:Reply)=>{
         message:'از حساب کاربری با موفقیت خارج شدید',
         statusCode:200,
     })
+};
+
+
+export const getAllUserBranchManagerController = async (req:Req , reply:Reply)=>{
+    try{
+          const manager = await getAllUserBranchManager();
+        console.log("manager" , manager)
+        return reply.code(200).send({
+            message:"لیست تمام مدیر شعبه ها دریافت شد",
+            statusCode:200,
+            data:manager
+        })
+    }catch(error:any){
+        return reply.code(401).send({
+            message:error.message,
+            statusCode:401
+        })
+    }
 }

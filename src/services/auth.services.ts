@@ -255,3 +255,12 @@ export const getProfile = async (id:string)=>{
 
     return profile
 }
+
+export const getAllUserBranchManager = async ()=>{
+    const manager = await User.findAll({
+        where:{roles:'مدیر شعبه', is_guest:false},
+        attributes:{exclude:['password']}
+    });
+
+    return manager
+}
