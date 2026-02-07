@@ -5,6 +5,7 @@ logoutController,
 verifyPhoneOtpController,
 registerManagerBranchController,
 getAllUserBranchManagerController,
+getAllUsersCustomersController,
 } from '@/controller/auth.controller.js'
 import { authenticateToken } from '@/middleware/authenticateToken.js';
 import { fast } from '@/types/fastify.js'
@@ -22,4 +23,5 @@ export default async function authRoutes(fastify:fast){
     fastify.post('/register-code', verifyPhoneOtpController)
     fastify.get('/profile',{preHandler: authenticateToken} , profileController);
     fastify.get('/users-branch', {preHandler:authenticateToken} , getAllUserBranchManagerController);
+    fastify.get('/customers' , getAllUsersCustomersController);
 }

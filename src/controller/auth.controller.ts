@@ -261,4 +261,20 @@ export const getAllUserBranchManagerController = async (req:Req , reply:Reply)=>
             statusCode:401
         })
     }
+};
+
+export const getAllUsersCustomersController = async (req:Req , reply:Reply)=>{
+    try{
+        const customers = await getAllUserBranchManager();
+        return reply.code(200).send({
+            message:"لیست مشتریان دریافت شد",
+            statusCode:200,
+            data:customers
+        })
+    }catch(error:any){
+        return reply.code(401).send({
+            message:error.message,
+            statusCode:401
+        })
+    }
 }

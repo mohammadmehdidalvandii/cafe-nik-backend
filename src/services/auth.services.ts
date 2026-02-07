@@ -263,4 +263,12 @@ export const getAllUserBranchManager = async ()=>{
     });
 
     return manager
+};
+
+export const getAllUsersCustomer = async ()=>{
+    const customers = await User.findAll({
+        attributes:{exclude:['password']}
+    });
+
+    return customers
 }
