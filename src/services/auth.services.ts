@@ -1,4 +1,4 @@
-import {User} from '@/models/index.js';
+import {Menu, Order, OrderItem, User} from '@/models/index.js';
 import { Otp } from '@/models/Otp.model.js';
 import { Op } from 'sequelize';
 import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword, verifyToken } from '@/utils/auth.js';
@@ -267,7 +267,17 @@ export const getAllUserBranchManager = async ()=>{
 
 export const getAllUsersCustomer = async ()=>{
     const customers = await User.findAll({
-        attributes:{exclude:['password']}
+        include:[
+            {model:Order , as:'order', 
+                include:[
+                    {model:OrderItem, as:'order_items',
+                        include:[{model:Menu ,as:"menu"}]
+                    }
+                ]
+            }
+        ],
+        attributes:{exclude:['password']},
+        order: [['createdAt', 'DESC']],
     });
 
     return customers
