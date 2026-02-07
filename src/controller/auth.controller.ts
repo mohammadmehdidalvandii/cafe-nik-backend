@@ -1,6 +1,7 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager, getAllUsersCustomer } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
+import { getAllCategoryController } from './category_product.controller.js';
 
 
 export const registerPasswordController = async (req:Req , reply:Reply)=>{
@@ -265,7 +266,7 @@ export const getAllUserBranchManagerController = async (req:Req , reply:Reply)=>
 
 export const getAllUsersCustomersController = async (req:Req , reply:Reply)=>{
     try{
-        const customers = await getAllUserBranchManager();
+        const customers = await getAllUsersCustomer();
         return reply.code(200).send({
             message:"لیست مشتریان دریافت شد",
             statusCode:200,
