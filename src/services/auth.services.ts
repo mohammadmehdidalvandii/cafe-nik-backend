@@ -1,4 +1,4 @@
-import {Menu, Order, OrderItem, User} from '@/models/index.js';
+import {Branch, Menu, Order, OrderItem, User} from '@/models/index.js';
 import { Otp } from '@/models/Otp.model.js';
 import { Op } from 'sequelize';
 import { comparePassword, generateAccessToken, generateRefreshToken, hashedPassword, verifyToken } from '@/utils/auth.js';
@@ -272,6 +272,9 @@ export const getAllUsersCustomer = async ()=>{
                 include:[
                     {model:OrderItem, as:'order_items',
                         include:[{model:Menu ,as:"menu"}]
+                    },
+                    {
+                        model:Branch ,as:'branch'
                     }
                 ]
             }
