@@ -111,6 +111,7 @@ export const deleteOrder = async (id:string)=>{
 }
 
 export const markOrderAsDelivered = async (pickupCode:string)=>{
+    if(!pickupCode) throw new Error('کد تحویل خالی است')
     try{
         const order = await Order.findOne({where:{pickup_code:pickupCode}});
         if(!order) throw new Error('سفارش با کد تحویل پیدا نشد');

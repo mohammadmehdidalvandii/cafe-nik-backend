@@ -116,8 +116,9 @@ export const deleteOrderController = async (req:Req , reply:Reply)=>{
 
 export const deliveredOrderController = async (req:Req , reply:Reply)=>{
     try{
-        const {pickupCode} = req.body as {pickupCode:string};
-        const order = await markOrderAsDelivered(pickupCode);
+        const {pickup_code} = req.body as {pickup_code:string};
+        console.log("pc", pickup_code)
+        const order = await markOrderAsDelivered(pickup_code);
         return reply.code(200).send({
             message:'سفارش تحویل داد شد',
             statusCode:200,
