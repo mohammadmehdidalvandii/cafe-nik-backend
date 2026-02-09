@@ -1,4 +1,4 @@
-import {Branch, City, User} from '@/models/index.js';
+import {Branch, City, Menu, Order, OrderItem, User} from '@/models/index.js';
 import { CreateBranchProps, UpdateBranchProps } from '@/types/branch.js';
 
 export const createBranch = async ({name , country , city_id , address , users_id , phone , orders_count , total_revenue}:CreateBranchProps)=>{
@@ -51,7 +51,16 @@ export const getBranchUserId = async (users_id:string)=>{
         where:{users_id},
         include:[
             {model:City , as:'city'},
-            {model:User, as:'user', attributes:{exclude:['password']}}
+            {model:User, as:'user', attributes:{exclude:['password']}},
+            {model:Order ,as:"order",
+                include:[
+                    {model:OrderItem, as:'order_items',
+                        include:[
+                            {model:Menu ,as:"menu"}
+                        ]
+                    }
+                ]
+            }
         ]
     });
 
