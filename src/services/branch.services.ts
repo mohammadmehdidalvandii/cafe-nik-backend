@@ -58,7 +58,8 @@ export const getBranchUserId = async (users_id:string)=>{
                         include:[
                             {model:Menu ,as:"menu"}
                         ]
-                    }
+                    },
+                    {model:User, as:'user', attributes:{exclude:['password']}},
                 ]
             }
         ]
