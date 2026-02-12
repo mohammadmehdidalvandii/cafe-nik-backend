@@ -93,6 +93,21 @@ export const getOrderById = async (id:string)=>{
   return order;   
 };
 
+export const getOrderByUserId = async (user_id:string)=>{
+    console.log("user-id", user_id)
+    if(!user_id) throw new Error('شناسه کاربر ارسال نشده است');
+    const orders = await Order.findAll({
+        where:{user_id},
+        include:[
+            {model:User , as:'user'},
+            {model:Branch ,  as: 'branch'},
+            {model:OrderItem , as:'order_items',include:[{model:Menu , as:'menu'}]},
+        ]
+    });
+
+    return orders
+}
+
 export const updateOrder = async (id:string , data:Partial<{status:'در انتظار تایید'|'تایید شد'|'درحال آماده سازی'|'آماده تحویل'|'تحویل داد شد'|'لغو شد'}>)=>{
     const order = await Order.findByPk(id);
     if(!order) throw new Error('سفارش یافت نشد');

@@ -1,4 +1,4 @@
-import {createOrder , getAllOrders ,getOrderById ,deleteOrder ,updateOrder, markOrderAsDelivered} from '@/services/order.services.js';
+import {createOrder , getAllOrders ,getOrderById ,deleteOrder ,updateOrder, markOrderAsDelivered, getOrderByUserId} from '@/services/order.services.js';
 import { Reply, Req } from '@/types/fastify.js';
 import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
 
@@ -68,6 +68,23 @@ export const getOrderByIdController = async (req:Req , reply:Reply)=>{
         })       
     }
 };
+
+export  const getOrderUserController = async (req:Req , reply:Reply)=>{
+    try{
+        const {user_id} = req.params as {user_id:string};
+        console.log("user -<" , user_id)
+        const orders = await getOrderByUserId(user_id);
+        return reply.code(200).send({
+            statusCode:200,
+            data:orders
+        });
+    }catch(error:any){
+        return reply.code(400).send({
+            statusCode:400,
+            message:error.message
+        })
+    }
+}
 
 export const updateOrderController = async (req:Req , reply:Reply)=>{
     try{
