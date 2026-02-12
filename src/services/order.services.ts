@@ -93,11 +93,10 @@ export const getOrderById = async (id:string)=>{
   return order;   
 };
 
-export const getOrderByUserId = async (user_id:string)=>{
-    console.log("user-id", user_id)
-    if(!user_id) throw new Error('شناسه کاربر ارسال نشده است');
+export const getOrderByUserId = async (id:string)=>{
+    if(!id) throw new Error('شناسه کاربر ارسال نشده است');
     const orders = await Order.findAll({
-        where:{user_id},
+        where:{user_id:id},
         include:[
             {model:User , as:'user'},
             {model:Branch ,  as: 'branch'},

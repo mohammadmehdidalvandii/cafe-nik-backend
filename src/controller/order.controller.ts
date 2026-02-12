@@ -71,9 +71,9 @@ export const getOrderByIdController = async (req:Req , reply:Reply)=>{
 
 export  const getOrderUserController = async (req:Req , reply:Reply)=>{
     try{
-        const {user_id} = req.params as {user_id:string};
-        console.log("user -<" , user_id)
-        const orders = await getOrderByUserId(user_id);
+        const {id} = req.params as {id:string};
+        
+        const orders = await getOrderByUserId(id);
         return reply.code(200).send({
             statusCode:200,
             data:orders

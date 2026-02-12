@@ -6,7 +6,7 @@ export default async function orderRoutes(fastify:fast){
     fastify.post('/deliver', deliveredOrderController);
     fastify.get('/' , getAllOrderController);
     fastify.get('/:id', getOrderByIdController);
-    fastify.get('/user/:user_id',getOrderUserController);
+    fastify.get('/user/:id',getOrderUserController);
     fastify.put('/update/:id', updateOrderController);
     fastify.delete('/delete/:id', deleteOrderController);
 }
