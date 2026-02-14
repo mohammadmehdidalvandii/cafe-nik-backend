@@ -102,7 +102,7 @@ export const getOrderByUserId = async (id:string)=>{
             {model:Branch ,  as: 'branch'},
             {model:OrderItem , as:'order_items',include:[{model:Menu , as:'menu'}]},
         ],
-        order:['createAt','DESC']
+        order:[['createdAt','DESC']]
     });
 
     return orders
