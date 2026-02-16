@@ -56,7 +56,7 @@ export const createOrder = async ({user_id , branch_id  , delivery_time , delive
                 await sendOrderItems(
                     user.phone,
                     user.username || 'کاربرمهان',
-                    order.delivery_date,
+                    new Date(order.delivery_date).toLocaleDateString('fa-IR'),
                     order.delivery_time,
                     order.pickup_code,
                 )
