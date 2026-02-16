@@ -53,14 +53,26 @@ export const registerManagerBranchController = async (req:Req , reply:Reply)=>{
 export const registerGuessController = async (req:Req , reply:Reply )=>{
     try{
         const {username , phone} = req.body as RegisterWithGuest;
-        const user = await registerWithGuest({
+        const {accessToken , refreshToken} = await registerWithGuest({
             username,
             phone
         });
 
+               if(!refreshToken){
+                    throw new Error('Refresh Token not generate')                   
+            }
+        
+            reply.cookie('refreshToken', refreshToken,{
+                httpOnly:true,
+                secure:true,
+                sameSite:'strict',
+                path:'/',
+                maxAge:60 * 60 * 24 * 7
+            })
+
         reply.code(201).send({
             message:'حساب کاربری ایجاد شد ',
-            data:user
+            data:accessToken
         })
     }catch(error:any){
         reply.code(401).send({

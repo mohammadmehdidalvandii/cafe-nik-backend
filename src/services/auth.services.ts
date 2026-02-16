@@ -139,7 +139,20 @@ export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
         login_method:'guest',
         is_guest:true,
     });
-    return register
+
+            const accessToken  = generateAccessToken({
+        id:register.id,
+        username:register.username,
+        phone:register.phone,
+        roles:register.roles,
+        email:register.email,
+    });
+    const refreshToken = generateRefreshToken({
+        id:register.id
+    });
+
+
+    return {accessToken , refreshToken}
 };
 
 
