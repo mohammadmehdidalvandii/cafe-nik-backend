@@ -1,4 +1,4 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager, getAllUsersCustomer } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager, getAllUsersCustomer, updateProfile, changePassword } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
 import { getAllCategoryController } from './category_product.controller.js';
@@ -289,5 +289,50 @@ export const getAllUsersCustomersController = async (req:Req , reply:Reply)=>{
             message:error.message,
             statusCode:401
         })
+    }
+}
+
+export const updateProfileController = async (req:Req , reply:Reply)=>{
+    try{
+        const {id} = req.params as {id:string};
+        const {email , password} = req.body as {email:string , password:string}
+
+        const result = await updateProfile(id, {email , password});
+
+        return reply.code(200).send({
+            message:'اپدیت موفیت آمیز بود',
+            statusCode:200,
+            data:result,
+        });
+
+    }catch(error:any){
+        return reply.status(400).send({
+            message:error.message,
+            statusCode:400,
+        })
+    }
+}
+
+export const changePasswordController = async(req:Req , reply:Reply)=>{
+    try{
+        const {id} =  req.params as {id:string}
+        const {currentPassword , newPassword} = req.body as {currentPassword:string , newPassword:string};
+
+        if(!currentPassword || !newPassword){
+            return reply.code(400).send({
+                message:'رمز فعلی و رمز جدید الزامی است'
+            })
+        };
+
+        const result = await changePassword(id , currentPassword , newPassword);
+        return reply.code(200).send({
+            message:'رمز عبور با موفقیت تغییر کرد',
+            statusCode:200,
+            data:result
+        })
+    }catch(error:any){
+    return reply.status(400).send({
+      message: error.message,
+    });
     }
 }

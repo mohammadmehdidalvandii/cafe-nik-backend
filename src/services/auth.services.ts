@@ -298,3 +298,51 @@ export const getAllUsersCustomer = async ()=>{
 
     return customers
 }
+
+// updateProfile 
+
+export const updateProfile = async (id:string ,{email , password}:{password:string , email:string})=>{
+    const user =  await User.findByPk(id);
+    if(!user){
+        throw new Error('کاربر یافت نشد');
+    }
+    const existEmail = await User.findOne({where:{email}});
+    if(existEmail){
+        throw new Error('این ایمیل قبلا ثبت شده است')
+    }
+    user.email = email
+
+    const hashed = await hashedPassword(password);
+    user.password = hashed,
+    user.is_guest = false,
+
+    await user.save();
+
+    return {message:"اطلاعات با موفقیت ثبت شد "}
+}
+
+// Change Password
+export const changePassword = async (id:string , currentPassword:string,  newPassword:string)=>{
+    const user = await User.findByPk(id);
+    if(!user){
+        throw new Error('کاربر یافت  نشد')
+    }
+
+    if(!user.password){
+        throw new Error('این کاربر رمز عبور ندارد')
+    }
+
+    const isMatch = await comparePassword(currentPassword , user.password);
+    if(!isMatch){
+        throw new Error('رمز عبور فعلی اشتباه است !')
+    }
+
+    const newHashedPassword = await hashedPassword(newPassword);
+    await user.update({
+        password:newHashedPassword,
+        login_method:'password',
+        is_guest:false
+    });
+
+    return {message:'رمز عبور با موفقیت تغییر کرد'}
+}
