@@ -295,9 +295,9 @@ export const getAllUsersCustomersController = async (req:Req , reply:Reply)=>{
 export const updateProfileController = async (req:Req , reply:Reply)=>{
     try{
         const {id} = req.params as {id:string};
-        const {email , password} = req.body as {email:string , password:string}
+        const {email , password , username} = req.body as {email:string , password:string , username:string}
 
-        const result = await updateProfile(id, {email , password});
+        const result = await updateProfile(id, {email , password ,  username});
 
         return reply.code(200).send({
             message:'اپدیت موفیت آمیز بود',

@@ -301,15 +301,12 @@ export const getAllUsersCustomer = async ()=>{
 
 // updateProfile 
 
-export const updateProfile = async (id:string ,{email , password}:{password:string , email:string})=>{
+export const updateProfile = async (id:string ,{email , password , username}:{password:string , email:string , username:string})=>{
     const user =  await User.findByPk(id);
     if(!user){
         throw new Error('کاربر یافت نشد');
     }
-    const existEmail = await User.findOne({where:{email}});
-    if(existEmail){
-        throw new Error('این ایمیل قبلا ثبت شده است')
-    }
+    user.username = username || 'مشتری'
     user.email = email
 
     const hashed = await hashedPassword(password);
@@ -318,7 +315,13 @@ export const updateProfile = async (id:string ,{email , password}:{password:stri
 
     await user.save();
 
-    return {message:"اطلاعات با موفقیت ثبت شد "}
+    return {message:"اطلاعات با موفقیت ثبت شد " ,user:{    id: user.id,
+    email: user.email,
+    username: user.username,
+    phone: user.phone,
+    roles: user.roles,
+    login_method: user.login_method,
+    is_guest: user.is_guest}}
 }
 
 // Change Password
