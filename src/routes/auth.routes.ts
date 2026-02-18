@@ -24,7 +24,7 @@ export default async function authRoutes(fastify:fast){
     fastify.post('/registerPhone', sendOtpController);
     fastify.post('/register-code', verifyPhoneOtpController)
     fastify.put('/update-profile/:id', updateProfileController);
-    fastify.post('/change-password/:id', changePasswordController);
+    fastify.put('/change-password/:id', changePasswordController);
     fastify.get('/profile',{preHandler: authenticateToken} , profileController);
     fastify.get('/users-branch', {preHandler:authenticateToken} , getAllUserBranchManagerController);
     fastify.get('/customers' , getAllUsersCustomersController);
