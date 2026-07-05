@@ -3,18 +3,19 @@ refreshTokenController,
 profileController,
 logoutController,
 verifyPhoneOtpController,
-registerManagerBranchController,
+
 getAllUserBranchManagerController,
 getAllUsersCustomersController,
 updateProfileController,
 changePasswordController,
+createBranchManagerController,
 } from '@/controller/auth.controller.js'
 import { authenticateToken } from '@/middleware/authenticateToken.js';
 import { fast } from '@/types/fastify.js'
 
 export default async function authRoutes(fastify:fast){
     fastify.post('/register', registerPasswordController);
-    fastify.post('/register-manager', registerManagerBranchController);
+    fastify.post('/register-manager', {preHandler:authenticateToken} , createBranchManagerController );
     fastify.post('/guest', registerGuessController);
     fastify.post('/sendCode', sendOtpController);
     fastify.post('/verify-code', verifyOtpController);

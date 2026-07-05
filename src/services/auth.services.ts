@@ -49,7 +49,6 @@ export const registerManagerBranch = async ({username , phone , email , password
     const roles = nonGuestCount === 0 ? 'مدیریت' : 'مدیر شعبه';
 
     const hashPassword = await hashedPassword(password);
-
     const newUser = await User.create({
         username,
         phone,
@@ -154,7 +153,32 @@ export const registerWithGuest = async({username , phone}:RegisterWithGuest)=>{
 
     return {accessToken , refreshToken}
 };
+// RegisterManager
+export const  registerManageBranch = async ({username , phone , email , password}:RegisterWithPasswordProps)=>{
+    const existUser = await User.findOne({
+        where:{
+            [Op.or]:[{phone} , {email}],
+        },
+    })
 
+    if(existUser){
+        throw new Error('این کاربر قبلا ثبت شده است')
+    }
+
+    const role = 'مدیر شعبه';
+    const hashPassword = await hashedPassword(password);
+
+    const newManager = User.create({
+        username,
+        phone,
+        roles:role,
+        password:hashPassword,
+        login_method:"password",
+        is_guest:false,
+    });
+
+    return newManager
+}
 
 // RegisterWithPhoneOTP
 export const registerWithPhoneSendOTP = async (phone:string)=>{

@@ -1,7 +1,6 @@
-import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager, getAllUsersCustomer, updateProfile, changePassword } from '@/services/auth.services.js';
+import{ registerWithPassword , registerWithGuest , sendOTP ,verifyCode , loginWithPassword , refreshToken, getProfile, registerWithPhoneSendOTP, verifyPhoneOtp, registerManagerBranch, getAllUserBranchManager, getAllUsersCustomer, updateProfile, changePassword, registerManageBranch } from '@/services/auth.services.js';
 import { LoginWithPassword, RegisterWithGuest, RegisterWithOTPProps, RegisterWithPasswordProps, VerifyCodeOtpProps } from '@/types/auth.js';
 import { Reply, Req } from '@/types/fastify.js';
-import { getAllCategoryController } from './category_product.controller.js';
 
 
 export const registerPasswordController = async (req:Req , reply:Reply)=>{
@@ -27,20 +26,28 @@ export const registerPasswordController = async (req:Req , reply:Reply)=>{
     }
 };
 
-export const registerManagerBranchController = async (req:Req , reply:Reply)=>{
+
+
+export const createBranchManagerController = async (req:Req , reply:Reply)=>{
     try{
-        const {username , email , phone , password} = req.body as RegisterWithPasswordProps;
-        const user = await registerManagerBranch({
+        const {username , phone , email , password} = req.body as RegisterWithPasswordProps;
+    
+        const userRole = (req as any).user.roles;
+
+        if(userRole !== 'مدیریت'){
+            return reply.status(403).send({
+                message:'شما دسترسی به این عملیات ندارید'
+            })
+        };
+
+        const result = await registerManagerBranch({
             username,
-            email,
             phone,
-            password
+            email:email,
+            password,
         });
 
-        reply.code(201).send({
-            message:"حساب کاربری با موفقیت ایجاد شد",
-            data:user,
-        })
+        return reply.status(201).send(result);
 
     }catch(error:any){
         reply.code(401).send({
@@ -250,7 +257,7 @@ export const verifyPhoneOtpController = async (req:Req, reply:Reply)=>{
     }
 }
 
-export const logoutController = async (req:Req , reply:Reply)=>{
+export const logoutController = async (_req:Req , reply:Reply)=>{
     reply.clearCookie('refreshToken');
     reply.code(200).send({
         message:'از حساب کاربری با موفقیت خارج شدید',
@@ -259,7 +266,7 @@ export const logoutController = async (req:Req , reply:Reply)=>{
 };
 
 
-export const getAllUserBranchManagerController = async (req:Req , reply:Reply)=>{
+export const getAllUserBranchManagerController = async (_req:Req , reply:Reply)=>{
     try{
           const manager = await getAllUserBranchManager();
         console.log("manager" , manager)
@@ -276,7 +283,7 @@ export const getAllUserBranchManagerController = async (req:Req , reply:Reply)=>
     }
 };
 
-export const getAllUsersCustomersController = async (req:Req , reply:Reply)=>{
+export const getAllUsersCustomersController = async (_req:Req , reply:Reply)=>{
     try{
         const customers = await getAllUsersCustomer();
         return reply.code(200).send({
