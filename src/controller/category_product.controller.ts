@@ -19,7 +19,7 @@ export const createCategoryProductController = async (req:Req , reply:Reply)=>{
     }
 };
 
-export const getAllCategoryController = async (req:Req, reply:Reply)=>{
+export const getAllCategoryController = async (_req:Req, reply:Reply)=>{
     try{
         const categoriesProduct = await getAllCategoryProduct();
         reply.code(200).send({

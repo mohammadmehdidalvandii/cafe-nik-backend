@@ -27,7 +27,7 @@ export const createBranchController = async (req:Req , reply:Reply)=>{
     }
 };
 
-export const getBranchesController = async (req:Req , reply:Reply)=>{
+export const getBranchesController = async (_req:Req , reply:Reply)=>{
     try{
         const branches = await getAllBranches();
         reply.code(200).send({

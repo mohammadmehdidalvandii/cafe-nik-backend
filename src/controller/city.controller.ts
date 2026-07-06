@@ -20,7 +20,7 @@ export const createCityController = async (req:Req , reply:Reply)=>{
     }
 };
 
-export const getAllCityController = async (req:Req , reply:Reply)=>{
+export const getAllCityController = async (_req:Req , reply:Reply)=>{
     try{
         const cities = await getAllCities();
         reply.code(200).send({

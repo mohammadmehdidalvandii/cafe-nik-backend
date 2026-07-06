@@ -28,7 +28,7 @@ export const createMenuController = async (req:Req , reply:Reply )=>{
     }
 };
 
-export const getMenuAllController = async(req:Req , reply:Reply)=>{
+export const getMenuAllController = async(_req:Req , reply:Reply)=>{
     try{
             const menu  = await getAllMenu();
     reply.code(200).send({
