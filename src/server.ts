@@ -13,7 +13,10 @@ const fast = fastify({logger:true});
 
 fast.register(cookie);
 fast.register(cors,{
-    origin:'http://localhost:5173',
+    origin:[
+        'http://localhost:5173',
+        'https://cafe-nik.vercel.app'
+    ],
     credentials:true,
     methods:['DELETE','PUT','GET','POST']
 })
