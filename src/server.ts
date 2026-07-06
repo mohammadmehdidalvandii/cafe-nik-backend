@@ -35,7 +35,7 @@ const start = async ()=>{
         console.log("Database connected ✅");
         await sequelize.sync();
         console.log("✅ Models synced");
-        await fast.listen({port:3000});
+        await fast.listen({port:3000 , host:'0.0.0.0'});
         console.log("Server running on port 3000")
     }catch(error:any){
         console.error(error);
