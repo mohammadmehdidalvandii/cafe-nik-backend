@@ -1,6 +1,6 @@
 import sequelize from '@/config/db.js';
 import {Order , User , Branch, Menu, OrderItem} from '@/models/index.js';
-import { OrderCreateProps, OrderUpdataProps } from '@/types/order.js';
+import { OrderCreateProps } from '@/types/order.js';
 import { OrderItemProps } from '@/types/orderItem.js';
 import { sendOrderItems } from './sms.services.js';
 
